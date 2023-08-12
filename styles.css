@@ -26,3 +26,17 @@ body {
     border:2px solid #000; 
     border-radius: 10px;
 }
+
+.color-palette {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.color-button {
+    width: 50px; /* Genişlik ayarı */
+    height: 50px; /* Yükseklik ayarı */
+    margin: 0 5px;
+    border: none;
+    cursor: pointer;
+}

@@ -2,6 +2,7 @@ const canvas = document.getElementById("drawingCanvas");
 const context = canvas.getContext("2d");
 let isDrawing = false;
 let isErasing = false;
+let selectedColor = "#000"; // Varsayılan çizim rengi
 
 canvas.addEventListener("mousedown", startDrawing);
 canvas.addEventListener("mousemove", draw);
@@ -14,6 +15,11 @@ canvas.addEventListener("touchend", stopDrawingTouch);
 const eraserButton = document.getElementById("eraserButton");
 eraserButton.addEventListener("click", toggleEraser);
 
+const colorButtons = document.querySelectorAll(".color-button");
+colorButtons.forEach(button => {
+    button.addEventListener("click", changeColor);
+});
+
 function startDrawing(event) {
     isDrawing = true;
     draw(event);
@@ -25,9 +31,9 @@ function draw(event) {
     const x = event.clientX - canvas.offsetLeft;
     const y = event.clientY - canvas.offsetTop;
 
-    context.lineWidth = isErasing ? 20 : 2; 
+    context.lineWidth = isErasing ? 20 : 2;
     context.lineCap = isErasing ? "square" : "round";
-    context.strokeStyle = isErasing ? "#f0f0f0" : "#000";
+    context.strokeStyle = isErasing ? "#f0f0f0" : selectedColor;
 
     context.lineTo(x, y);
     context.stroke();
@@ -47,11 +53,11 @@ function toggleEraser() {
     if (isErasing) {
         context.strokeStyle = "#f0f0f0";
         context.lineCap = "square";
-        canvas.style.cursor = "url('img/eraser.png'), auto"; 
+        canvas.style.cursor = "url('img/eraser.png'), auto";
     } else {
-        context.strokeStyle = "#000";
+        context.strokeStyle = selectedColor;
         context.lineCap = "round";
-        canvas.style.cursor = "url('img/pencil.png'), auto"; 
+        canvas.style.cursor = "url('img/pencil.png'), auto";
     }
 }
 
@@ -67,9 +73,9 @@ function drawTouch(event) {
     const x = event.touches[0].clientX - canvas.offsetLeft;
     const y = event.touches[0].clientY - canvas.offsetTop;
 
-    context.lineWidth = isErasing ? 20 : 2; 
+    context.lineWidth = isErasing ? 20 : 2;
     context.lineCap = isErasing ? "square" : "round";
-    context.strokeStyle = isErasing ? "#f0f0f0" : "#000";
+    context.strokeStyle = isErasing ? "#f0f0f0" : selectedColor;
 
     context.lineTo(x, y);
     context.stroke();
@@ -81,4 +87,9 @@ function stopDrawingTouch(event) {
     event.preventDefault();
     isDrawing = false;
     context.beginPath();
+}
+
+function changeColor(event) {
+    selectedColor = event.target.style.backgroundColor;
+    context.strokeStyle = isErasing ? "#f0f0f0" : selectedColor;
 }
